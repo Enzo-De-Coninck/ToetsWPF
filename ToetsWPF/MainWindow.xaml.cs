@@ -69,8 +69,8 @@ namespace ToetsWPF
         {
             Nieuw();
             DeStackPanel.Visibility = Visibility.Visible;
-            String stringPath = @"C:\Users\Enzo\Source\Repos\Enzo-De-Coninck\ToetsWPF\ToetsWPF\images\kerstkaart.jpg";
-            Uri imageUri = new Uri(stringPath, UriKind.Relative);
+            String stringPath = "pack://application:,,,/ToetsWPF;component/images/kerstkaart.jpg";
+            Uri imageUri = new Uri(stringPath, UriKind.Absolute);
             BitmapImage imageBitmap = new BitmapImage(imageUri);
             deAchtergrond.ImageSource = imageBitmap;
             KaartOpslaan.IsEnabled = true;
@@ -81,8 +81,8 @@ namespace ToetsWPF
         {
             Nieuw();
             DeStackPanel.Visibility = Visibility.Visible;
-            String stringPath = @"C:\Users\Enzo\Source\Repos\Enzo-De-Coninck\ToetsWPF\ToetsWPF\images\geboortekaart.jpg";
-            Uri imageUri = new Uri(stringPath, UriKind.Relative);
+            String stringPath = "pack://application:,,,/ToetsWPF;component/images/geboortekaart.jpg";
+            Uri imageUri = new Uri(stringPath, UriKind.Absolute);
             BitmapImage imageBitmap = new BitmapImage(imageUri);
             deAchtergrond.ImageSource = imageBitmap;
             KaartOpslaan.IsEnabled = true;
@@ -171,7 +171,7 @@ namespace ToetsWPF
                     using (StreamReader bestand = new StreamReader(dlg.FileName))
                     {
                         String stringpath = $@"{bestand.ReadLine()}";
-                        Uri imageUri = new Uri(stringpath, UriKind.Relative);
+                        Uri imageUri = new Uri(stringpath, UriKind.Absolute);
                         BitmapImage imageBitmap = new BitmapImage(imageUri);
                         deAchtergrond.ImageSource = imageBitmap;
                         int number;
