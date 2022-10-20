@@ -67,8 +67,9 @@ namespace ToetsWPF
 
         private void Kerst_Click(object sender, RoutedEventArgs e)
         {
+            Nieuw();
             DeStackPanel.Visibility = Visibility.Visible;
-            String stringPath = @"C:\Users\User\Desktop\C#\ToetsWPF\ToetsWPF\images\kerstkaart.jpg";
+            String stringPath = @"C:\Users\Enzo\Source\Repos\Enzo-De-Coninck\ToetsWPF\ToetsWPF\images\kerstkaart.jpg";
             Uri imageUri = new Uri(stringPath, UriKind.Relative);
             BitmapImage imageBitmap = new BitmapImage(imageUri);
             deAchtergrond.ImageSource = imageBitmap;
@@ -78,8 +79,9 @@ namespace ToetsWPF
 
         private void Geboorte_Click(object sender, RoutedEventArgs e)
         {
+            Nieuw();
             DeStackPanel.Visibility = Visibility.Visible;
-            String stringPath = @"C:\Users\User\Desktop\C#\ToetsWPF\ToetsWPF\images\geboortekaart.jpg";
+            String stringPath = @"C:\Users\Enzo\Source\Repos\Enzo-De-Coninck\ToetsWPF\ToetsWPF\images\geboortekaart.jpg";
             Uri imageUri = new Uri(stringPath, UriKind.Relative);
             BitmapImage imageBitmap = new BitmapImage(imageUri);
             deAchtergrond.ImageSource = imageBitmap;
@@ -93,14 +95,21 @@ namespace ToetsWPF
             KaartAfdrukken.IsEnabled = false;
             KaartOpslaan.IsEnabled = false;
             ComboBoxKleuren.SelectedIndex = 0;
-            ComboBoxLettertype.SelectedIndex = 0;
-            
+            TextBoxWens.Text = "";
+            TextBoxWens.FontSize = 12;
+            ComboBoxLettertype.SelectedItem = new FontFamily("Arial");
+            for (int i = deCanvas.Children.Count - 1; i >= 0 ; i+= -1)
+            {
+                UIElement kind = deCanvas.Children[i];
+                if (kind is Ellipse)
+                    deCanvas.Children.Remove(kind);
+            }
+            Bestandslocatie.Content = "nieuw";
         }
 
         private void NewExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             Nieuw();
-            Bestandslocatie.Content = "nieuw";
         }
 
         private void CloseExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -158,6 +167,7 @@ namespace ToetsWPF
                 dlg.Filter = "Wenskaarten |*.txt";
                 if (dlg.ShowDialog() == true)
                 {
+                    DeStackPanel.Visibility = Visibility.Visible;
                     using (StreamReader bestand = new StreamReader(dlg.FileName))
                     {
                         String stringpath = $@"{bestand.ReadLine()}";
@@ -171,7 +181,13 @@ namespace ToetsWPF
                             for (int i = 0; i < number; i++)
                             {
                                 Ellipse bol = new Ellipse();
-                                bol.Fill = (SolidColorBrush)new BrushConverter().ConvertFromString(bestand.ReadLine());
+                                Color kleur = (Color)ColorConverter.ConvertFromString(bestand.ReadLine());
+                                SolidColorBrush brush = new SolidColorBrush(kleur);
+                                bol.Fill = brush;
+                                bol.Width = 40;
+                                bol.Height = 40;
+                                bol.Stroke = Brushes.Black;
+                                bol.StrokeThickness = 5;
                                 double canvasLeft = Convert.ToDouble(bestand.ReadLine());
                                 double canvasTop = Convert.ToDouble(bestand.ReadLine());
                                 Canvas.SetLeft(bol, canvasLeft);
@@ -179,9 +195,9 @@ namespace ToetsWPF
                                 deCanvas.Children.Add(bol);
                             }
                         }
-                        TextBoxWens.Text = Console.ReadLine();
+                        TextBoxWens.Text = bestand.ReadLine();
                         TypeConverter convertLettertype = TypeDescriptor.GetConverter(typeof(FontFamily));
-                        TextBoxWens.FontFamily = (FontFamily)convertLettertype.ConvertFromString(bestand.ReadLine());
+                        ComboBoxLettertype.SelectedItem = (FontFamily)convertLettertype.ConvertFromString(bestand.ReadLine());
                         TextBoxWens.FontSize = Convert.ToDouble(bestand.ReadLine());    
 
                         Bestandslocatie.Content = System.IO.Path.GetFullPath(dlg.FileName).ToString();
