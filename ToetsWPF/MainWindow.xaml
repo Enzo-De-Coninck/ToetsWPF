@@ -10,6 +10,8 @@
     <Window.CommandBindings>
         <CommandBinding Command="New" Executed="NewExecuted"></CommandBinding>
         <CommandBinding Command="Close" Executed="CloseExecuted"></CommandBinding>
+        <CommandBinding Command="Open" Executed="OpenExecuted"></CommandBinding>
+        <CommandBinding Command="Save" Executed="SaveExecuted"></CommandBinding>
     </Window.CommandBindings>
     <DockPanel>
         <Menu Height="24" Name="MenuBalk" DockPanel.Dock="Top">
@@ -27,7 +29,7 @@
         </Menu>
         <StackPanel Name="DeStackPanel" DockPanel.Dock="Top" Orientation="Horizontal">
             <StackPanel HorizontalAlignment="Left" Margin="5">
-                <Canvas Name="deCanvas" Width="500" Height="400">
+                <Canvas AllowDrop="True" Name="deCanvas" Width="500" Height="400" Drop="Ellipse_Drop">
                     <Canvas.Background>
                         <ImageBrush x:Name="deAchtergrond" ImageSource="images/kerstkaart.jpg"></ImageBrush>
                     </Canvas.Background>
@@ -40,7 +42,7 @@
                 <StackPanel VerticalAlignment="Top">
                     <TextBlock HorizontalAlignment="Center">Kleur van de bal</TextBlock>
                     <ComboBox Name="ComboBoxKleuren" DisplayMemberPath="Naam" SelectedValuePath="Naam"></ComboBox>
-                    <Ellipse Margin="5" Stroke="Black" StrokeThickness="5" Height="40" Width="40" Fill="{Binding ElementName=ComboBoxKleuren, Path=SelectedValue}"></Ellipse>
+                    <Ellipse  Margin="5" Stroke="Black" StrokeThickness="5" Height="40" Width="40" Fill="{Binding ElementName=ComboBoxKleuren, Path=SelectedValue}" MouseMove="Ellipse_MouseMove"/>
                 </StackPanel>
                 <StackPanel Margin="0 50 0 50" VerticalAlignment="Center">
                     <Image AllowDrop="True" Height="100" Source="images/vuilnisbak.png"/>
