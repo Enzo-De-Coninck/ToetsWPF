@@ -160,16 +160,24 @@ namespace ToetsWPF
                 {
                     using (StreamReader bestand = new StreamReader(dlg.FileName))
                     {
-                        deAchtergrond.ImageSource = new ImageSourceConverter().ConvertFromString(bestand.ReadLine()) as ImageSource;
-                        int tijdelijk = int.Parse(bestand.ReadLine());
-                        for (int i = 0; i < tijdelijk; i++)
+                        String stringpath = $@"{bestand.ReadLine()}";
+                        Uri imageUri = new Uri(stringpath, UriKind.Relative);
+                        BitmapImage imageBitmap = new BitmapImage(imageUri);
+                        deAchtergrond.ImageSource = imageBitmap;
+                        int number;
+                        bool tijdelijk = Int32.TryParse(bestand.ReadLine(), out number);
+                        if (tijdelijk)
                         {
-                            Ellipse bol = new Ellipse();
-                            bol.Fill = (SolidColorBrush)new BrushConverter().ConvertFromString(bestand.ReadLine());
-                            double canvasLeft = Convert.ToDouble(bestand.ReadLine());
-                            double canvasTop = Convert.ToDouble(bestand.ReadLine());
-                            Canvas.SetLeft(bol, canvasLeft);
-                            Canvas.SetTop(bol, canvasTop);
+                            for (int i = 0; i < number; i++)
+                            {
+                                Ellipse bol = new Ellipse();
+                                bol.Fill = (SolidColorBrush)new BrushConverter().ConvertFromString(bestand.ReadLine());
+                                double canvasLeft = Convert.ToDouble(bestand.ReadLine());
+                                double canvasTop = Convert.ToDouble(bestand.ReadLine());
+                                Canvas.SetLeft(bol, canvasLeft);
+                                Canvas.SetTop(bol, canvasTop);
+                                deCanvas.Children.Add(bol);
+                            }
                         }
                         TextBoxWens.Text = Console.ReadLine();
                         TypeConverter convertLettertype = TypeDescriptor.GetConverter(typeof(FontFamily));
