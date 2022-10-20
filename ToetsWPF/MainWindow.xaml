@@ -1,0 +1,72 @@
+﻿<Window x:Class="ToetsWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ToetsWPF"
+        mc:Ignorable="d"
+        Title="Wenskaarten" Height="550" Width="750" Loaded="Window_Loaded" Closing="Window_Closing">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="New" Executed="NewExecuted"></CommandBinding>
+        <CommandBinding Command="Close" Executed="CloseExecuted"></CommandBinding>
+    </Window.CommandBindings>
+    <DockPanel>
+        <Menu Height="24" Name="MenuBalk" DockPanel.Dock="Top">
+            <MenuItem Header="_Bestand">
+                <MenuItem Header="Nieuw" Command="New"/>
+                <MenuItem Header="Openen" Command="Open"/>
+                <MenuItem Name="KaartOpslaan" Header="Opslaan" Command="Save" IsEnabled="False"/>
+                <MenuItem Name="KaartAfdrukken" Header="Afdrukvoorbeeld" Command="PrintPreview" IsEnabled="False"/>
+                <MenuItem Header="Afsluiten" Command="Close"/>
+            </MenuItem>
+            <MenuItem Header="Kaarten">
+                <MenuItem Name="Kerst" Tag="images/kerstkaart.jpg" Header="Kerstkaart" Click="Kerst_Click"></MenuItem>
+                <MenuItem Name="Geboorte" Tag="images/geboortekaart.jpg" Header="Geboortekaart" Click="Geboorte_Click"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <StackPanel Name="DeStackPanel" DockPanel.Dock="Top" Orientation="Horizontal">
+            <StackPanel HorizontalAlignment="Left" Margin="5">
+                <Canvas Name="deCanvas" Width="500" Height="400">
+                    <Canvas.Background>
+                        <ImageBrush x:Name="deAchtergrond" ImageSource="images/kerstkaart.jpg"></ImageBrush>
+                    </Canvas.Background>
+                </Canvas>
+                <TextBox HorizontalContentAlignment="Center" Name="TextBoxWens" FontFamily="{Binding ElementName=ComboBoxLettertype, Path=SelectedValue}" FontSize="{Binding ElementName=FontsizeLabel, Path=Content}" Margin="5">
+                    
+                </TextBox>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" Width="200" Margin="5">
+                <StackPanel VerticalAlignment="Top">
+                    <TextBlock HorizontalAlignment="Center">Kleur van de bal</TextBlock>
+                    <ComboBox Name="ComboBoxKleuren" DisplayMemberPath="Naam" SelectedValuePath="Naam"></ComboBox>
+                    <Ellipse Margin="5" Stroke="Black" StrokeThickness="5" Height="40" Width="40" Fill="{Binding ElementName=ComboBoxKleuren, Path=SelectedValue}"></Ellipse>
+                </StackPanel>
+                <StackPanel Margin="0 50 0 50" VerticalAlignment="Center">
+                    <Image AllowDrop="True" Height="100" Source="images/vuilnisbak.png"/>
+                </StackPanel>
+                <StackPanel VerticalAlignment="Bottom">
+                    <TextBlock HorizontalAlignment="Center">Lettertype</TextBlock>
+                    <ComboBox Name="ComboBoxLettertype" ItemsSource="{Binding Source={x:Static Member=Fonts.SystemFontFamilies}}">
+                        
+                    </ComboBox>
+                    <TextBlock HorizontalAlignment="Center">Grootte</TextBlock>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label HorizontalAlignment="Center" VerticalAlignment="Center" Name="FontsizeLabel" Content="{Binding ElementName=TextBoxWens, Path=FontSize}"></Label>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Vertical">
+                            <RepeatButton Name="VergrootButton" Click="VergrootButton_Click">+</RepeatButton>
+                            <RepeatButton Name="VerkleinButton" Click="VerkleinButton_Click">-</RepeatButton>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                </StackPanel>
+            </StackPanel>
+            
+        </StackPanel>
+        <StatusBar Height="24" DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
+            <StatusBarItem HorizontalAlignment="Left" Name="Bestandslocatie" Content="nieuw">
+                
+            </StatusBarItem>
+        </StatusBar>
+    </DockPanel>
+</Window>
